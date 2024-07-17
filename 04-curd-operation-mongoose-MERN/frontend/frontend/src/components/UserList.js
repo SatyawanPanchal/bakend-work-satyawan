@@ -15,9 +15,12 @@ const UserList = ({ setUser, users, fetchUsers }) => {
       <ul>
         {users.map((user) => (
           <li key={user._id}>
+          <div>
+
             {user.name} - {user.email}
             <button onClick={() => setUser(user)}>Edit</button>
             <button onClick={() => handleDelete(user._id)}>Delete</button>
+          </div>
           </li>
         ))}
       </ul>

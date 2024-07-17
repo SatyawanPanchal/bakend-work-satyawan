@@ -8,17 +8,18 @@ require('dotenv').config();
 const app = express();
 app.use(express.json());
 app.use(cors());
- app.use('/api/users', userRoutes);
+app.use('/api/users', userRoutes);
 
 const dbUri = process.env.MONGODB_URI;
+const port=process.env.PORT||5000;
  
 mongoose.connect(dbUri)
 .then(()=>{
     console.log('database connected'); 
     
 })
+ 
 
-const port=process.env.PORT||5000;
 
 app.get('/',(req,res)=>{
     res.send("Server is running here");
