@@ -36,6 +36,7 @@ const UserForm = ({ user, setUser, fetchUsers }) => {
 
   return (
     <div>
+<<<<<<< HEAD
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -64,6 +65,14 @@ const UserForm = ({ user, setUser, fetchUsers }) => {
         <br />
         <br />
         <button type="submit">{user ? 'Update' : 'Create'} User</button>
+=======
+      <form onSubmit={()=>handleSubmit()}>
+
+      <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" required />
+      <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
+      <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" required /> <br />
+      <button type="submit">{user ? 'Update' : 'Create'} User</button>
+>>>>>>> 0d1759e6b29b3f114621bca009c44c7d58de380f
       </form>
       {error && <p>{error}</p>}
     </div>
