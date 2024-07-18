@@ -1,0 +1,122 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+h2 {
+  text-align: center;
+  color: white;
+  background-color: brown;
+  width: 68vw;
+  margin-left: 37px;
+  border: 2px solid;
+  height: 10vh;
+  font-size: xx-large;
+  padding: 0.7rem;
+  border-radius: 10px;
+  border-top: none;
+  border-bottom: none;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-style: italic;
+}
+
+/* user form styles */
+.userForm {
+  width: 73vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-left: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-style: italic;
+}
+.inputDiv input {
+    border: 1px solid grey;
+    border-radius: 8px;
+}
+.inputDiv input:focus{
+    border: 1px solid brown;
+    outline: none;
+}
+.labelDiv {
+  width: 73vw;
+  display: flex;
+  justify-content: space-around;
+  font-size: larger;
+}
+.inputDiv {
+  width: 73vw;
+  display: flex;
+  justify-content: space-around;
+}
+.userForm input {
+  width: 20.5vw;
+  height: 7vh;
+}
+.buttonDiv{
+    display: flex;
+    justify-content: center;
+    
+}
+.buttonDiv button{
+    width: 20vw;
+  height: 7vh;
+  font-size: large;
+  color: rgba(0, 0, 0, 0.704);
+ border: 1px solid rgb(255, 0, 0);
+  border-radius: 12px;
+  background-color: rgba(255, 250, 250, 0.649);
+}
+.buttonDiv button:hover {
+  background-color: brown;
+  color: white;
+}
+
+/* user list styles */
+.usersListDiv {
+  width: 100%;
+  display: flex;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-style: italic;
+}
+.usersListDiv ul {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 70vw;
+}
+.usersListDiv li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 15px;
+  border: 1px solid orange;
+  /* margin: 10px; */
+  margin-bottom: 10px;
+  border-radius: 12px;
+}
+.usersListDiv li:first-child {
+  border-bottom: none;
+}
+.userNameSpan {
+  width: 30vw;
+}
+.emailSpan {
+  width: 20vw;
+}
+.buttonSpan {
+  width: 30%;
+  display: flex;
+}
+
+.usersListDiv button {
+  width: 37%;
+  margin-right: 6px;
+  padding: 4px;
+  border: 1px solid rgb(255, 0, 0);
+  border-radius: 12px;
+  background-color: rgba(255, 250, 250, 0.649);
+}
+.usersListDiv button:hover {
+  background-color: rgb(251, 102, 102);
+}

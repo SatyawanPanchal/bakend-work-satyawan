@@ -29,7 +29,7 @@ const UserForm = ({user,setUser,fetchUsers}) => {
 
       <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" required />
       <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
-      <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" required /> <br /><br/>
+      <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" required /> <br />
       <button type="submit">{user ? 'Update' : 'Create'} User</button>
       </form>
     </div>
