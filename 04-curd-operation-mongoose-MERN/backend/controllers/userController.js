@@ -1,17 +1,22 @@
 const User = require('../models/user');
 
-// Create a new user
+ 
+
 const createUser = async (req, res) => {
   try {
     const user = new User(req.body);
+    console.log('Received user data:', user);
+    
     await user.save();
     res.status(201).json(user);
-    console.log('user',user);
     
+    console.log('Saved user:', user);
   } catch (error) {
+    console.error('Error occurred:', error);
     res.status(400).json({ error: error.message });
   }
 };
+
 
 // Get all users
 const getAllUsers = async (req, res) => {

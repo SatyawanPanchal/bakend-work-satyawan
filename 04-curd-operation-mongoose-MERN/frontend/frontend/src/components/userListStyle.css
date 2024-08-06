@@ -1,0 +1,46 @@
+.usersListDiv{
+    display: flex;
+    flex-wrap: wrap;
+    width: 70%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-style: italic;
+}
+.usersListDiv ul{
+    width: 100%;
+}
+.usersListDiv li{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 15px;
+    border: 1px solid orange;
+    margin: 10px;
+    border-radius: 12px;
+}
+.usersListDiv li:first-child{
+    border-bottom: none;
+}
+.userNameSpan{
+    width: 30%;
+}
+.emailSpan{
+    width: 40%;
+}
+.buttonSpan{
+    width: 30%;
+    display: flex;
+
+}
+ 
+.usersListDiv button{
+    width: 35%;
+    margin-right: 6px;
+    padding: 4px;
+    border: 1px solid rgb(255, 0, 0);
+    border-radius: 12px;
+    background-color: rgba(255, 250, 250, 0.649);
+}
+.usersListDiv button:hover{
+    background-color: rgb(251, 102, 102);
+
+}
