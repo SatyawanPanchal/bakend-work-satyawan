@@ -1,84 +1,107 @@
 import userModel from "../models/userModel.js";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 import validator from "validator";
-
-// some notes
-// (JSON Web Token) is a way of securely transmitting information between two parties
-// bcrypt :password security : making it more resistant to brute-force attacks
-//  validator : checks like isEmail , isEmpty etc
-
-// Login User
-
-const loginUser = async (req, res) => {
-  const {email,password}=req.body;
-  try {
-    const user=await userModel.findOne({email})
-    if (!user) {
-      res.json({success:false,message:'user doesnt exist or email not correct'})
-    }
-    const isMatch=await bcrypt.compare(password,user.password);
-    if (!isMatch) {
-      return res.json({success:false,message:'invalid credentials'})
-    }
-    const token=createToken(user._id);
-   res.json({success:true,token})
-
-  } catch (error) {
-    console.log('error found n login',error);
-    res.json({success:false,message:"error"})
-
-    
-    
-  }
-};
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET);
 };
 
-// register user
+// while logging in
+// 1.we need to check wheater one with this email already exists
+// 2.then we will check for  password actually mathches
+// 3.if yes create the token and send it back with success
+
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await userModel.findOne({ email }); // we try to get one with same email id
+    if (!user) {
+      // if user is not found
+      return res.json({
+        success: false,
+        message: "no such user or email is incorrect",
+      });
+    }
+    // if user is found we check for password
+    const isPasswordMatched = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatched) {
+      // well check if password is not matched
+      return res.json({
+        success: false,
+        message: "Here password is not matched",
+      });
+    }
+
+    // both email and password taken from database are matched so we need to create a token and send it back to
+    //client end
+
+    const token = createToken(user._id);
+    return res.json({ success: true, message: "we have got the user", token });
+  } catch (error) {
+    return res.json({ success: false,  message:`${error.message}` });
+  }
+  
+};
+
+// // register user
+
+// while doing registration we do following things
+// 1. user already exists or not if yes give message if not register a new user
+// 2. is email valid
+// 3. is password valid if no give message
+// 4. if yes encrypt it and make a model to store this to database
+// 5. also create a token and send back to frontend
 
 const registerUser = async (req, res) => {
-  const { name, password, email } = req.body;
+  const {name, email, password} = req.body;
+
+  const exists = await userModel.findOne({email})
+
+  console.log('====================================');
+  console.log("this is existing",exists);
+  console.log('====================================');
 
   try {
-    // if user already exists
-    const exists = await userModel.findOne({ email });
     if (exists) {
-      return res.json({ success: false, message: "user already exists" });
+      return res.json({ success: false, message:`${exists} user already exists karta hai` });
     }
-    // validating email format and strong password
+
     if (!validator.isEmail(email)) {
       return res.json({
         success: false,
-        message: "Please enter a valid email",
+        message: "please enter a valid email",
       });
     }
-    // if length of password is less than 8 than we will get a message like given one
+
     if (password.length < 8) {
       return res.json({
         success: false,
-        message: "please enter an strong passwod",
+        message: "please enter the length more than 8 characters",
       });
     }
-    // encrypting the password
-    const salt = await bcrypt.genSalt(10); //range is 5 to 15 ... number is high means password is highly secure
-    const hashedPassword = await bcrypt.hash(password, salt); //encrypting it using hashing technique
-    //now creating the new user
+
+    // well if email and password both are perfect we need to encrypt the password by using bcrypt
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // well if password is encrypted create a new userModel instance and store the data in database
 
     const newUser = new userModel({
-      name: name,
-      email: email,
+      name,
+      email,
       password: hashedPassword,
     });
 
+    // now let us save the user with encrypted password
+
     const user = await newUser.save();
-    const token = createToken(user._id);
-    res.json({ success: true, token });
-  } catch (error) 
-  {
-    res.json({success:false,message:"error here in userController registration"})
+
+    const Token = createToken(user._id); // token created
+    res.json({ success: true, Token });
+  } catch (error) {
+    return res.json({ success: false, message: `${error.message}`+"Some Error occured" });
   }
 };
 

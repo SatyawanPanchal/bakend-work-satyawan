@@ -1,12 +1,14 @@
 /* eslint-disable react/prop-types */
-import { createContext, useEffect, useState } from "react";
+import { createContext,   useEffect,   useState } from "react";
 import { food_list } from "../assets/assets";
 
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
 
+  const[token,setToken]=useState([])
   const [cartItems, setCartItems] = useState({})
+  const url="http://localhost:4000"
   
   const addToCart = (itemId) => {
     if (!cartItems[itemId])
@@ -39,9 +41,18 @@ const StoreContextProvider = (props) => {
    
 
   const contextValue = {
-    food_list,cartItems,setCartItems,addToCart,removeFromCart,getTotalCartAmount
+    food_list,cartItems,setCartItems,addToCart,removeFromCart,getTotalCartAmount,url,token,setToken
    
   };
+
+useEffect(()=>{
+  if(localStorage.getItem("token"))
+  {
+    setToken(localStorage.getItem("token"))
+  }
+},[])
+
+
   return (
     <StoreContext.Provider value={contextValue}>
       
