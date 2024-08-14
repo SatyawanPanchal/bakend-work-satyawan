@@ -1,8 +1,11 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
-import stripe from "stripe";
+import Stripe from "stripe";
+import "dotenv/config";
 
+ 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
 // placing user order form backend
 const placeOrder = async (req, res) => {
   const frontend_url = "http://localhost:5173";
@@ -62,4 +65,23 @@ const placeOrder = async (req, res) => {
   }
 };
 
-export { placeOrder };
+const verifyOrder=async(req,res)=>{
+  const{orderId,success}=req.body;
+
+  try {
+        if(success==="true")
+        {
+          await orderModel.findByIdAndUpdate(orderId,{payment:true});
+          res.json({success:true, message:"paid"})
+        }
+        else{
+          await orderModel.findByIdAndDelete(orderId);
+          res.json({success:false,message:"not paid"})
+        }
+  } catch (error) {
+    console.log(error.message);
+    res.json({success:false,message:error.message})
+    
+  }
+}
+export { placeOrder,verifyOrder };

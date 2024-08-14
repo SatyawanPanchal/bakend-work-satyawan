@@ -14,6 +14,9 @@ app.use(express.json());
 app.use(cors());
 
 const port = 4000;
+console.log('====================================');
+console.log(process.env.STRIPE_SECRET_KEY);
+console.log('====================================');
 connectDB();
 
 //api endpoints
