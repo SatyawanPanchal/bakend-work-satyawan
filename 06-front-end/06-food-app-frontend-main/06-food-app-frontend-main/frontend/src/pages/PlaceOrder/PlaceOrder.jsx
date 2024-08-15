@@ -1,4 +1,5 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import {useNavigate} from "react-router-dom"
 import "./placeOrder.css";
 import { StoreContext } from "../../context/StoreContext";
 import axios from "axios";
@@ -40,12 +41,17 @@ const PlaceOrder = () => {
         orderItems.push(itemInfo);
       }
     });
+      console.log('order items in placeOrder.jsx front end', orderItems);
+
+
     // preparing all the order data at one place
     let orderData = {
       address: data,
       items: orderItems,
       amount: getTotalCartAmount() + 2,
     };
+
+ 
 
     let response = await axios.post(url + "/api/order/place", orderData, {
       headers:  {token}
@@ -74,8 +80,22 @@ const PlaceOrder = () => {
     
   };
 
+const navigate= useNavigate();
+
+useEffect(()=>{      // this is to hide the order page if you are logged out
+
+if(!token)
+{
+navigate("/cart")
+}
+else if(getTotalCartAmount()===0)
+{
+  navigate("/cart")
+}
+},[token])
+
   return (
-    <form className="place-order" onSubmit={placeOrder}>
+    <form className="place-order" onSubmit={(e)=>placeOrder(e)}>
       <div className="place-order-left">
         <p className="title">Delivery Information</p>
         <div className="multi-fields">
@@ -186,3 +206,4 @@ const PlaceOrder = () => {
 };
 
 export default PlaceOrder;
+ 

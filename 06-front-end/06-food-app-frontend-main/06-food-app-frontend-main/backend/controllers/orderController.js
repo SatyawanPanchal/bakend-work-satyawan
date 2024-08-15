@@ -3,12 +3,12 @@ import userModel from "../models/userModel.js";
 import Stripe from "stripe";
 import "dotenv/config";
 
- 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // placing user order form backend
 const placeOrder = async (req, res) => {
-  const frontend_url = "http://localhost:5173";
+  const frontend_url = "http://localhost:5174";
+   
   try {
     const newOrder = new orderModel({
       userId: req.body.userId,
@@ -65,38 +65,65 @@ const placeOrder = async (req, res) => {
   }
 };
 
-const verifyOrder=async(req,res)=>{
-  const{orderId,success}=req.body;
+const verifyOrder = async (req, res) => {
+  const { orderId, success } = req.body;
 
   try {
-        if(success==="true")
-        {
-          await orderModel.findByIdAndUpdate(orderId,{payment:true});
-          res.json({success:true, message:"paid"})
-        }
-        else{
-          await orderModel.findByIdAndDelete(orderId);
-          res.json({success:false,message:"not paid"})
-        }
+    if (success === "true") {
+      await orderModel.findByIdAndUpdate(orderId, { payment: true });
+      res.json({ success: true, message: "paid" });
+    } else {
+      await orderModel.findByIdAndDelete(orderId);
+      res.json({ success: false, message: "not paid" });
+    }
   } catch (error) {
     console.log(error.message);
-    res.json({success:false,message:error.message})
-    
+    res.json({ success: false, message: error.message });
   }
-}
+};
 
 // user order for the frontend
 
-const userOrders=async (req,res)=>{
+const userOrders = async (req, res) => {
   try {
-    const orders=await orderModel.find({userId:req.body.userId});
-    res.json({success:true , data:orders})
+    const orders = await orderModel.find({ userId: req.body.userId });
+    res.json({ success: true, data: orders });
   } catch (error) {
-    console.log('====================================');
+    console.log("====================================");
     console.log(error.message);
-    console.log('====================================');
-    res.json({success:false, message:error.message})
+    console.log("====================================");
+    res.json({ success: false, message: error.message });
   }
-
 }
-export {userOrders, placeOrder,verifyOrder };
+  // list order in admin
+
+   
+
+  const listOrders = async (req,res)=>{
+    try {
+      const orders = await orderModel.find({});
+      res.json({ success: true, data: orders });
+    } catch (error) {
+      console.log("error in list orders ", error.message);
+      res.json({
+        success: false,
+        message: error.message + "is error in listing orders",
+      });
+    }
+  };
+// api for updating orders
+const updateStatus=async(req,res)=>{
+try {
+  const update= await orderModel.findByIdAndUpdate(req.body.orderId,{status:req.body.status});
+  res.json({success:true , message:"status updated"})
+} catch (error) {
+  console.log('====================================');
+  console.log(error);
+  console.log('====================================');
+  res.json({success:false, message:error.message+"is the error in status update"})
+}
+}
+
+
+ 
+export {updateStatus, listOrders, userOrders, placeOrder, verifyOrder };

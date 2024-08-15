@@ -38,13 +38,20 @@ const MyOrders = () => {
         return(
             <div key={index} className="my-orders-order">
             <img src={assets.parcel_icon} alt="" />
-            {/* <p>{order.items.map((item,index)=>{
+            <p>{order.items.map((item,index)=>{
               if(index===order.items.length-1)
               {
-                return item.name +"x"+item.qu
+                return item.name +" x "+item.quantity
               }
-            })}</p> */}
+              else{
+                return item.name +" x "+item.quantity + ","
+              }
+            })}</p>
 
+            <p>${order.amount}.00</p>
+            <p>Items:{order.items.length}</p>
+            <p> &#x25cf;<span><b>{order.status}</b></span></p>
+<button onClick={()=>fetchOrders()}>Track Orders</button>
             </div>
         )
       })}
