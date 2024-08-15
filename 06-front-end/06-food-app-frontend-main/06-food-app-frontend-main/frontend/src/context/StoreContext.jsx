@@ -5,7 +5,7 @@ import axios from "axios";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
-  const [token, setToken] = useState([]);
+  const [token, setToken] = useState("");   // these changes
   const [cartItems, setCartItems] = useState({});
   const url = "http://localhost:4000";
   const [food_list, setFoodList] = useState([]);
@@ -47,10 +47,39 @@ const StoreContextProvider = (props) => {
     return totalAmount;
   };
 
+ 
+
+  const fetchFoodList = async () => {
+    const response = await axios.get(url + "/api/food/list");
+    setFoodList(response.data.data);
+  };
+
+  const loadCartData = async (token) => {
+    const response = await axios.post(
+      url + "/api/cart/get",
+      {},
+      { headers: { token } }
+    );
+    console.log('the data of loadCart',response);
+    
+    setCartItems(response.data.cartData);
+  };
+
+  useEffect(() => {
+    async function loadData() {
+      await fetchFoodList();
+      if (localStorage.getItem("token")) {
+        setToken(localStorage.getItem("token"));
+        await loadCartData(localStorage.getItem("token"));
+      }
+    }
+    loadData();
+  }, []);
   const contextValue = {
     food_list,
     cartItems,
     setCartItems,
+    loadCartData,
     addToCart,
     removeFromCart,
     getTotalCartAmount,
@@ -58,28 +87,6 @@ const StoreContextProvider = (props) => {
     token,
     setToken,
   };
-
-  const fetchFoodList = async () => {
-    const response = await axios.get(url + "/api/food/list");
-    setFoodList(response.data.data);
-  };
-
-  const loadCartData=async (token)=>{
-    const response=await axios.post(url+"/api/cart/get",{},{headers:{token}})
-    setCartItems(response.data.cartData)
-  }
-
-  useEffect(() => {
-    async function loadData() {
-      await fetchFoodList();
-      if (localStorage.getItem("token")) {
-        setToken(localStorage.getItem("token"));
-        await loadCartData(localStorage.getItem("token"))
-      }
-    }
-    loadData();
-  }, []);
-
   return (
     <StoreContext.Provider value={contextValue}>
       {props.children}

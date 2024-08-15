@@ -7,6 +7,7 @@ import Footer from "./components/Footer/Footer";
 import { useState } from "react";
 import LoginPopUp1 from "./components/LoginPopup1/LoginPopUp1";
 import Verify1 from "./pages/Verify/Verify1";
+import MyOrders from "./pages/MyOrders/MyOrders";
  
 
 const App = () => {
@@ -16,12 +17,11 @@ const App = () => {
     <div className="app">
       <Navbar setShowLogin={setShowLogin} />
       <Routes>
-        <Route path="/" element={<Home />}>
-          {" "}
-        </Route>
+        <Route path="/" element={<Home />}> </Route>
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/order" element={<PlaceOrder />}> </Route>
       <Route path="/verify" element={<Verify1/>}> </Route>
+      <Route path="/myorders" element={<MyOrders/>}></Route>
       </Routes>
    
     </div>
