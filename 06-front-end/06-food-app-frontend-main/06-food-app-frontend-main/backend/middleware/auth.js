@@ -3,7 +3,7 @@ import "dotenv/config";
 
 const authMiddleware = async (req, res, next) => {
   const { token } = req.headers;
-  console.log('token in auth.js',token);
+  console.log('token in auth.js',req.headers);
   
   if (!token) {
     return res.json({

@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET,{ expiresIn: '1h' });
+  return jwt.sign({ id }, process.env.JWT_SECRET );
 };
 
 // while logging in
@@ -98,8 +98,9 @@ const registerUser = async (req, res) => {
 
     const user = await newUser.save();
 
-    const Token = createToken(user._id); // token created
-    res.json({ success: true, Token });
+    const token = createToken(user._id); // token created
+    console.log('token in user controller',token)
+    res.json({ success: true, token });
   } catch (error) {
     return res.json({ success: false, message: `${error.message}`+"Some Error occured" });
   }

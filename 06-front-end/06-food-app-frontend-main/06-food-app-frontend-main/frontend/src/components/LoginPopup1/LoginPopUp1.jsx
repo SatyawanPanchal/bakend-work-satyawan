@@ -5,6 +5,7 @@ import { StoreContext } from '../../context/StoreContext'
 import axios from 'axios'
 import {toast} from "react-toastify"
 
+// eslint-disable-next-line react/prop-types
 const LoginPopup1 = ({ setShowLogin }) => {
 
     const { setToken, url,loadCartData } = useContext(StoreContext)
@@ -33,10 +34,11 @@ const LoginPopup1 = ({ setShowLogin }) => {
             new_url += "/api/user/register"
         }
         const response = await axios.post(new_url, data);
+        console.log('response in login popup',response)
         if (response.data.success) {
             setToken(response.data.token)
             localStorage.setItem("token", response.data.token)
-            loadCartData({token:response.data.token})
+            loadCartData( response.data.token)
             setShowLogin(false)
         }
         else {

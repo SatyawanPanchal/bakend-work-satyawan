@@ -56,9 +56,7 @@ const PlaceOrder = () => {
     let response = await axios.post(url + "/api/order/place", orderData, {
       headers:  {token}
     });
-     console.log('====================================');
-     console.log(response);
-     console.log('====================================');
+      
 
     if (response.data.success) {
       // if order is successfully placed we will get one session url 
